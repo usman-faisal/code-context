@@ -1,22 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { createSnippet } from "@/utils/api/snippets";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
 import NoteCreateHeader from "../note-create-header/note-create-header";
 import { Tables } from "@/lib/types/database.types";
 
 export default function NoSnippetCreated({ note }: { note: Tables<'notes'> }) {
-    const queryClient = useQueryClient()
-
-    const {mutateAsync: createSnippetMutation} = useMutation({
-        mutationFn: () => createSnippet(note.id, `console.log('hello')`, `# This is a snippet`, 1),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['snippets', note.id] })
-        }
-    })
     async function handleCreateNote() {
         try{
-            await createSnippetMutation()
+            await createSnippet({
+                code: `console.log('hello')`,
+                detail: `# This is a snippet`,
+                note_id: note.id,
+                order: 1
+            })
             toast.success('Snippet created')
         } catch (error) {
             if (error instanceof Error) {

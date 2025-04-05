@@ -3,28 +3,23 @@ import SnippetCodeInput from "../../common/snippet-code-input"
 import SnippetDetailInput from "../../common/snippet-detail-input"
 import { Tables } from "@/lib/types/database.types"
 import NoteCreateHeader from "../note-create-header/note-create-header"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createSnippet } from "@/utils/api/snippets"
+import { createSnippet } from "@/app/actions/snippets"
 import SnippetCreateHeader from "../note-create-header/snippet-create-header"
 import SnippetFooter from "../../common/snippet-footer"
 export default function SnippetList({ note }: { note: Tables<'notes'> }) {
     const snippetStore = useSnippetStore()
-    const queryClient = useQueryClient()
-    const {mutateAsync: createSnippetMutation} = useMutation({
-        mutationFn: () => createSnippet(note.id, `console.log('hello')`, `# This is a snippet`, snippetStore.snippets.length + 1),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['snippets', note.id] })
-        }
-    })
+
 
     async function handleAddSnippet() {
-        await createSnippetMutation();
+        await createSnippet({
+            code: '',
+            detail: '',
+            note_id: note.id,
+            order: snippetStore.snippets.length + 1
+        })
         setTimeout(() => {
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
-        }, 300);
+            scroll('next')
+        }, 500)
     }
 
     function scroll(direction: 'next' | 'prev') {

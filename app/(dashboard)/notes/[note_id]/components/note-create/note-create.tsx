@@ -1,20 +1,13 @@
 'use client'
 
 import { Tables } from "@/lib/types/database.types";
-import { useQuery } from "@tanstack/react-query";
-import { getSnippets } from "@/utils/api/snippets";
 import useSnippetStore from "@/store/snippetStore";
 import { useEffect } from "react";
 import NoSnippetCreated from "./snippet/no-snippet-created";
 import SnippetList from "./snippet/snippet-list";
 import { registerScrollEvent } from "@/lib/utils";
 
-export default function NoteCreate({ note }: { note: Tables<'notes'> }) {
-    const { data: snippets, isLoading } = useQuery({
-        queryKey: ['snippets', note.id],
-        queryFn: () => getSnippets(note.id)
-    })
-
+export default function NoteCreate({ note, snippets }: { note: Tables<'notes'>, snippets: Tables<'snippets'>[] }) {
     const snippetsStore = useSnippetStore()
 
     useEffect(() => {
@@ -26,10 +19,6 @@ export default function NoteCreate({ note }: { note: Tables<'notes'> }) {
     useEffect(() => {
         registerScrollEvent()
     }, [])
-
-    if (isLoading) {
-        return <div>Loading...</div>
-    }
 
     return (
         <>

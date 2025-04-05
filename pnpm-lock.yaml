@@ -29,9 +29,6 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.49.4
         version: 2.49.4
-      '@tanstack/react-query':
-        specifier: ^5.71.5
-        version: 5.71.5(react@19.1.0)
       '@uiw/react-md-editor':
         specifier: ^4.0.5
         version: 4.0.5(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -632,14 +629,6 @@ packages:
 
   '@tailwindcss/postcss@4.1.0':
     resolution: {integrity: sha512-b2NWFAFfLXY7960jLY5QkKbuYKrQUULx60XU3BCzyaUQpU/7lLf3n2CiHibZPdBq5CIXrUp10wdxhV0EI0Js2g==}
-
-  '@tanstack/query-core@5.71.5':
-    resolution: {integrity: sha512-XOQ5SyjCdwhxyLksGKWSL5poqyEXYPDnsrZAzJm2LgrMm4Yh6VOrfC+IFosXreDw9HNqC11YAMY3HlfHjNzuaA==}
-
-  '@tanstack/react-query@5.71.5':
-    resolution: {integrity: sha512-WpxZWy4fDASjY+iAaXB+aY+LC95PQ34W6EWVkjJ0hdzWWbczFnr9nHvHkVDpwdR18I1NO8igNGQJFrLrgyzI8Q==}
-    peerDependencies:
-      react: ^18 || ^19
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -2033,13 +2022,6 @@ snapshots:
       '@tailwindcss/oxide': 4.1.0
       postcss: 8.5.3
       tailwindcss: 4.1.0
-
-  '@tanstack/query-core@5.71.5': {}
-
-  '@tanstack/react-query@5.71.5(react@19.1.0)':
-    dependencies:
-      '@tanstack/query-core': 5.71.5
-      react: 19.1.0
 
   '@types/debug@4.1.12':
     dependencies:

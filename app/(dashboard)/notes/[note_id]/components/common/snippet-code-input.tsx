@@ -4,7 +4,7 @@ import useSnippetStore from "@/store/snippetStore";
 import { Editor } from "@monaco-editor/react";
 import { CopyIcon } from "lucide-react";
 import { Tables } from "@/lib/types/database.types";
-import { updateSnippet } from "@/utils/api/snippets";
+import { updateSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
 import { useCallback, useRef } from "react";
 
@@ -19,7 +19,12 @@ export default function SnippetCodeInput({snippet, isReadonly}: {snippet: Tables
 
         debounceTimer.current = setTimeout(async () => {
             toast.loading('saving...');
-            await updateSnippet(snippet.id, value ?? '', snippet.detail);
+            await updateSnippet({
+                id: snippet.id,
+                code: value ?? '',
+                detail: snippet.detail,
+                note_id: snippet.note_id
+            }, false);
             toast.success('saved');
             setTimeout(() => {
                 toast.dismiss();
@@ -55,8 +60,8 @@ export default function SnippetCodeInput({snippet, isReadonly}: {snippet: Tables
                 wordWrap: 'on',
                 readOnly: isReadonly
             }}
+            language={snippet.language ?? 'javascript'}
             width="100%"
-            defaultLanguage="javascript"
             theme="vs-dark"
             onChange={handleChange}
             defaultValue={snippet.code}

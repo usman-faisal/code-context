@@ -17,6 +17,7 @@ export default async function NotePage({ params }: { params: { note_id: string }
 
   // get note
   const { data: note, error: noteError } = await supabase.from('notes').select('*').eq('id', parseInt(note_id)).single()
+  const { data: snippets, error: snippetsError } = await supabase.from('snippets').select('*').eq('note_id', parseInt(note_id))
   
   const noteBelongsToUser = note?.user_id === user.user?.id
 
@@ -24,6 +25,11 @@ export default async function NotePage({ params }: { params: { note_id: string }
   if (noteError || !note) {
     return <div>Error: {noteError.message}</div>
   }
+
+  if (!Array.isArray(snippets) || snippetsError) {
+    return <div>Error: {snippetsError?.message}</div>
+  }
+  
   return (
     <ThemeProvider
     attribute="class"
@@ -31,17 +37,15 @@ export default async function NotePage({ params }: { params: { note_id: string }
     enableSystem
     disableTransitionOnChange
     >
-    <ReactQueryProvider>
         {
             !noteBelongsToUser ? (
             // display preview page
-              <ViewNote note={note}/>
+              <ViewNote note={note} snippets={snippets}/>
         ) : (
             // display edit page
-            <NoteCreate note={note}/>
+            <NoteCreate note={note} snippets={snippets}/>
         )
     }
-    </ReactQueryProvider>
     </ThemeProvider>
   );
 }

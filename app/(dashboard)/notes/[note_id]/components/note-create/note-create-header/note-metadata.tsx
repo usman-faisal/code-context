@@ -12,7 +12,7 @@ export default function NoteMetadata({ note }: { note: Tables<'notes'> }) {
     const [isEditing, setIsEditing] = useState(false);
 
     const handleSave = async () => {
-        const updatedNote = await updateNote(note.id.toString(), {
+        await updateNote(note.id.toString(), {
             title,
             description
         });

@@ -2,7 +2,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import useSnippetStore from "@/store/snippetStore";
 import { Tables } from "@/lib/types/database.types";
-import { updateSnippet } from "@/utils/api/snippets";
+import { updateSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,10 @@ export default function SnippetDetailInput({snippet, isReadonly}: {snippet: Tabl
 
         debounceTimer.current = setTimeout(async () => {
             toast.loading('saving...');
-            await updateSnippet(snippet.id, snippet.code, value ?? '');
+            await updateSnippet({
+                id: snippet.id,
+                detail: value ?? ''
+            });
             toast.success('saved');
             setTimeout(() => {
                 toast.dismiss();
