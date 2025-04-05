@@ -38,7 +38,7 @@ export type Database = {
         Row: {
           created_at: string
           description: string
-          id: number
+          id: string
           is_public: boolean
           public_id: string | null
           title: string
@@ -47,16 +47,16 @@ export type Database = {
         Insert: {
           created_at?: string
           description: string
-          id?: number
+          id?: string
           is_public?: boolean
           public_id?: string | null
-          title?: string
+          title: string
           user_id?: string
         }
         Update: {
           created_at?: string
           description?: string
-          id?: number
+          id?: string
           is_public?: boolean
           public_id?: string | null
           title?: string
@@ -90,27 +90,30 @@ export type Database = {
           code: string
           created_at: string
           detail: string
-          id: number
+          file_name: string | null
+          id: string
           language: string | null
-          note_id: number
+          note_id: string
           order: number
         }
         Insert: {
           code: string
           created_at?: string
           detail: string
-          id?: number
+          file_name?: string | null
+          id?: string
           language?: string | null
-          note_id: number
+          note_id: string
           order: number
         }
         Update: {
           code?: string
           created_at?: string
           detail?: string
-          id?: number
+          file_name?: string | null
+          id?: string
           language?: string | null
-          note_id?: number
+          note_id?: string
           order?: number
         }
         Relationships: [

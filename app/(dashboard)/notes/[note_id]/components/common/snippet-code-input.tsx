@@ -7,7 +7,7 @@ import { Tables } from "@/lib/types/database.types";
 import { updateSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
 import { useCallback, useRef } from "react";
-
+import { DEFAULT_SNIPPET_LANGUAGE } from "@/lib/constants/default-values";
 export default function SnippetCodeInput({snippet, isReadonly}: {snippet: Tables<'snippets'>, isReadonly: boolean}) {
     const snippetStore = useSnippetStore()
     const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -60,7 +60,7 @@ export default function SnippetCodeInput({snippet, isReadonly}: {snippet: Tables
                 wordWrap: 'on',
                 readOnly: isReadonly
             }}
-            language={snippet.language ?? 'javascript'}
+            language={snippet.language ?? DEFAULT_SNIPPET_LANGUAGE}
             width="100%"
             theme="vs-dark"
             onChange={handleChange}

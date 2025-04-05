@@ -5,13 +5,20 @@ import { Tables } from "@/lib/types/database.types";
 import { toast } from "sonner";
 import { deleteSnippet } from "@/app/actions/snippets";
 import { scroll } from "@/lib/utils";
+import useSnippetStore from "@/store/snippetStore";
 
 export default function SnippetCreateHeader({ snippet }: { snippet: Tables<'snippets'> }) {
+    const snippetStore = useSnippetStore()
     async function handleDeleteSnippet() {
         try {
+            snippetStore.deleteSnippet(snippet.id)
             scroll('prev')
-            await deleteSnippet(snippet.id, snippet.note_id)
-            toast.success('Snippet deleted')
+            try {
+                await deleteSnippet(snippet.id, snippet.note_id)
+                toast.success('Snippet deleted')
+            } catch (error) {
+                toast.error('Something went wrong')
+            }
         } catch (error) {
             toast.error('Something went wrong')
         }

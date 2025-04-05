@@ -6,20 +6,44 @@ import NoteCreateHeader from "../note-create-header/note-create-header"
 import { createSnippet } from "@/app/actions/snippets"
 import SnippetCreateHeader from "../note-create-header/snippet-create-header"
 import SnippetFooter from "../../common/snippet-footer"
+import { DEFAULT_SNIPPET_CODE, DEFAULT_SNIPPET_DETAIL, DEFAULT_SNIPPET_LANGUAGE, DEFAULT_SNIPPET_FILE_NAME } from "@/lib/constants/default-values"
+import { toast } from "sonner"
 export default function SnippetList({ note }: { note: Tables<'notes'> }) {
     const snippetStore = useSnippetStore()
 
-
     async function handleAddSnippet() {
-        await createSnippet({
-            code: '',
-            detail: '',
+        const lastSnippet = snippetStore.snippets[snippetStore.snippets.length - 1]
+
+        const snippetPayload = {
+            code: DEFAULT_SNIPPET_CODE,
+            detail: DEFAULT_SNIPPET_DETAIL,
+            language: DEFAULT_SNIPPET_LANGUAGE,
+            file_name: DEFAULT_SNIPPET_FILE_NAME,
             note_id: note.id,
-            order: snippetStore.snippets.length + 1
+            order: lastSnippet.order + 1,
+        }
+
+        snippetStore.addSnippet({
+            id: window.crypto.randomUUID(),
+            ...snippetPayload,
+            created_at: new Date().toISOString(),
         })
+
         setTimeout(() => {
             scroll('next')
-        }, 500)
+        }, 300)
+        try {
+            await createSnippet({
+                ...snippetPayload
+            })
+            toast.success('Snippet created')
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message ?? 'Something went wrong')
+            } else {
+                toast.error('Something went wrong')
+            }
+        }
     }
 
     function scroll(direction: 'next' | 'prev') {

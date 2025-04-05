@@ -16,8 +16,8 @@ export default async function NotePage({ params }: { params: { note_id: string }
 
 
   // get note
-  const { data: note, error: noteError } = await supabase.from('notes').select('*').eq('id', parseInt(note_id)).single()
-  const { data: snippets, error: snippetsError } = await supabase.from('snippets').select('*').eq('note_id', parseInt(note_id))
+  const { data: note, error: noteError } = await supabase.from('notes').select('*').eq('id', note_id).single()
+  const { data: snippets, error: snippetsError } = await supabase.from('snippets').select('*').eq('note_id', note_id)
   
   const noteBelongsToUser = note?.user_id === user.user?.id
 

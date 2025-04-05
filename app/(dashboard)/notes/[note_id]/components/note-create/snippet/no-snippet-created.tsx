@@ -3,15 +3,30 @@ import { createSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
 import NoteCreateHeader from "../note-create-header/note-create-header";
 import { Tables } from "@/lib/types/database.types";
+import useSnippetStore from "@/store/snippetStore";
+import { DEFAULT_SNIPPET_CODE, DEFAULT_SNIPPET_DETAIL, DEFAULT_SNIPPET_FILE_NAME, DEFAULT_SNIPPET_LANGUAGE } from "@/lib/constants/default-values"
+
 
 export default function NoSnippetCreated({ note }: { note: Tables<'notes'> }) {
+    const snippetStore = useSnippetStore()
     async function handleCreateNote() {
         try{
-            await createSnippet({
-                code: `console.log('hello')`,
-                detail: `# This is a snippet`,
+            const snippetPayload = {
+                code: DEFAULT_SNIPPET_CODE,
+                detail: DEFAULT_SNIPPET_DETAIL,
+                language: DEFAULT_SNIPPET_LANGUAGE,
+                file_name: DEFAULT_SNIPPET_FILE_NAME,
                 note_id: note.id,
-                order: 1
+                order: 1,
+            }
+            snippetStore.addSnippet({
+                id: window.crypto.randomUUID(),
+                ...snippetPayload,
+                created_at: new Date().toISOString()
+            })
+
+            await createSnippet({
+                ...snippetPayload
             })
             toast.success('Snippet created')
         } catch (error) {

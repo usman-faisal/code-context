@@ -3,7 +3,7 @@ import { Tables, TablesInsert, TablesUpdate } from "@/lib/types/database.types"
 import { createClient } from "@/utils/supabase/server"
 import { revalidatePath } from "next/cache"
 
-export async function getSnippets(noteId: number) {
+export async function getSnippets(noteId: string) {
     const supabase = await createClient()
 
     const { data, error } = await supabase
@@ -27,10 +27,10 @@ export async function createSnippet(snippet: TablesInsert<'snippets'>) {
         .insert(snippet)
 
     if (error) {
+        revalidatePath(`/notes/${snippet.note_id}`)
         throw new Error(error.message)
     }
 
-    revalidatePath(`/notes/${snippet.note_id}`)
     return data
 }
 
@@ -54,7 +54,7 @@ export async function updateSnippet(snippet: TablesUpdate<'snippets'>, revalidat
     return data
 }
 
-export async function deleteSnippet(snippetId: number, noteId: number) {
+export async function deleteSnippet(snippetId: string, noteId: string) {
     const supabase = await createClient()
 
     const { data, error } = await supabase
@@ -64,9 +64,10 @@ export async function deleteSnippet(snippetId: number, noteId: number) {
         .eq('note_id', noteId)
 
     if (error) {
+        revalidatePath(`/notes/${noteId}`)
         throw new Error(error.message)
     }
 
-    revalidatePath(`/notes/${noteId}`)
+    // revalidatePath(`/notes/${noteId}`)
     return data
 }

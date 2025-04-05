@@ -14,6 +14,9 @@ export default function NoteCreate({ note, snippets }: { note: Tables<'notes'>, 
         if (snippets && snippets?.length > 0) {
             snippetsStore.setSnippets(snippets)
         }
+        return () => {
+            snippetsStore.setSnippets([])
+        }
     }, [snippets])
 
     useEffect(() => {

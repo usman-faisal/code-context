@@ -13,6 +13,9 @@ export default function ViewNote({ note, snippets }: { note: Tables<'notes'>, sn
         if (snippets && snippets?.length > 0) {
             snippetsStore.setSnippets(snippets)
         }
+        return () => {
+            snippetsStore.setSnippets([])
+        }
     }, [snippets])
 
     useEffect(() => {
