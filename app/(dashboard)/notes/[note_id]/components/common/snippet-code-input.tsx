@@ -8,7 +8,8 @@ import { updateSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
 import { useCallback, useRef } from "react";
 import { DEFAULT_SNIPPET_LANGUAGE } from "@/lib/constants/default-values";
-export default function SnippetCodeInput({snippet, isReadonly}: {snippet: Tables<'snippets'>, isReadonly: boolean}) {
+import FileName from "./file-name";
+export default function SnippetCodeInput({ snippet, isReadonly }: { snippet: Tables<'snippets'>, isReadonly: boolean }) {
     const snippetStore = useSnippetStore()
     const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -42,30 +43,32 @@ export default function SnippetCodeInput({snippet, isReadonly}: {snippet: Tables
             ...snippet,
             code: value ?? ''
         });
-        
+
         updateInDatabase(value);
     }
-    
+
     return (
         <div className="flex flex-col">
             <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">filename.js</span>
-                <Button variant="ghost" size="icon" onClick={handleCopy}>    
+                {isReadonly ? <span className="text-sm text-muted-foreground">{snippet.file_name}</span> :
+                    <FileName snippet={snippet} />
+                }
+                <Button variant="ghost" size="icon" onClick={handleCopy}>
                     <CopyIcon className="w-4 h-4" />
                 </Button>
             </div>
             <Editor
-            className="h-full min-h-[200px]"
-            options={{
-                wordWrap: 'on',
-                readOnly: isReadonly
-            }}
-            language={snippet.language ?? DEFAULT_SNIPPET_LANGUAGE}
-            width="100%"
-            theme="vs-dark"
-            onChange={handleChange}
-            defaultValue={snippet.code}
-        />
+                className="h-full min-h-[200px]"
+                options={{
+                    wordWrap: 'on',
+                    readOnly: isReadonly
+                }}
+                language={snippet.language ?? DEFAULT_SNIPPET_LANGUAGE}
+                width="100%"
+                theme="vs-dark"
+                onChange={handleChange}
+                defaultValue={snippet.code}
+            />
         </div>
     )
 }

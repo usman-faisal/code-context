@@ -4,7 +4,7 @@ import { DEFAULT_SNIPPET_CODE, DEFAULT_SNIPPET_DETAIL, DEFAULT_SNIPPET_FILE_NAME
 import { Tables } from "./types/database.types";
 import { createSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
-import useSnippetStore from "@/store/snippetStore";
+import useSnippetStore, {SnippetStore} from "@/store/snippetStore";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -28,9 +28,13 @@ export function registerScrollEvent() {
   })
 }
 
-export async function handleSnippetCreation(isFirst: boolean = false, note: Tables<'notes'>) {
-  const snippetStore = useSnippetStore()
+export async function handleSnippetCreation(
+  isFirst: boolean = false, 
+  note: Tables<'notes'>,
+  snippetStore: SnippetStore
+) {
   try {
+      
       const lastOrder = isFirst ? 1 : snippetStore.snippets[snippetStore.snippets.length - 1]?.order + 1 || 1;
 
       const snippetPayload = {

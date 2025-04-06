@@ -21,7 +21,7 @@ export default function SnippetDetailInput({snippet, isReadonly}: {snippet: Tabl
             await updateSnippet({
                 id: snippet.id,
                 detail: value ?? ''
-            });
+            }, false);
             toast.success('saved');
             setTimeout(() => {
                 toast.dismiss();

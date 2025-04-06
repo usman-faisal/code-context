@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       console.log('Auth Callback: Session exchanged successfully. Redirecting to:', next); // Debug log
-      return NextResponse.redirect(`${origin}${next}`);
+      return NextResponse.redirect(`${origin}${next}/dashboard`);
     } else {
         console.error('Auth Callback: Error exchanging code for session:', error); // Debug log
     }

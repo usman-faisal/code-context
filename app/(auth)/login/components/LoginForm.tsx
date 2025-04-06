@@ -23,7 +23,7 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form action="">
+        {/* <form action="">
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -47,9 +47,9 @@ export function LoginForm() {
               <Button type="submit" formAction={login} className="w-full">
                 Login
               </Button>
-             <SignInWithGoogleButton/> 
-            </div>
-        </form>
+              </div>
+              </form> */}
+              <SignInWithGoogleButton/> 
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="underline">

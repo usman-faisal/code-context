@@ -1,18 +1,16 @@
-import SignOutButton from "@/components/signout-button";
+import HeroSection from "@/app/(landing)/components/hero-section";
+import { HeroHeader } from "@/app/(landing)/components/hero5-header";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Home() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if(!user) {
-    return <div>Please login</div>
-  }
   return (
-    <div>
-      <h1>Hello {user?.email}</h1>
-      <SignOutButton />
-    </div>
+    <>
+      <HeroHeader isLoggedIn={!!user} />
+      <HeroSection />
+    </>
   );
 }
   

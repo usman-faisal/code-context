@@ -5,7 +5,7 @@ import { create } from "zustand";
 
 type Snippet = Tables<'snippets'>
 
-interface SnippetStore {
+export interface SnippetStore {
     snippets: Snippet[];
     setSnippets: (snippets: Snippet[]) => void;
     addSnippet: (snippet: Snippet) => void;

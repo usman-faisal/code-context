@@ -1,9 +1,19 @@
 import { createClient } from "@/utils/supabase/server";
 import NoteCreate from "./components/note-create/note-create";
-import ReactQueryProvider from "@/providers/react-query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import ViewNote from "./components/view-note/view-note";
+import { Metadata } from "next";
 
+export async function generateMetadata({ params }: { params: { note_id: string } }): Promise<Metadata> {
+    const { note_id } = await params
+    const supabase = await createClient()
+    const { data: note } = await supabase.from('notes').select('*').eq('id', note_id).single()
+    return {
+        title: note?.title,
+        description: note?.description,
+    }
+}
+  
 
 export default async function NotePage({ params }: { params: { note_id: string } }) {
   const { note_id } = await params
@@ -31,12 +41,7 @@ export default async function NotePage({ params }: { params: { note_id: string }
   }
   
   return (
-    <ThemeProvider
-    attribute="class"
-    defaultTheme="dark"
-    enableSystem
-    disableTransitionOnChange
-    >
+    <>
         {
             !noteBelongsToUser ? (
             // display preview page
@@ -46,6 +51,6 @@ export default async function NotePage({ params }: { params: { note_id: string }
             <NoteCreate note={note} snippets={snippets}/>
         )
     }
-    </ThemeProvider>
+    </>
   );
 }
