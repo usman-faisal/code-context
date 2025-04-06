@@ -12,6 +12,8 @@ export interface SnippetStore {
     removeSnippet: (id: string) => void;
     updateSnippet: (id: string, snippet: Snippet) => void;
     deleteSnippet: (id: string) => void;
+    moveSnippetUp: (id: string) => void;
+    moveSnippetDown: (id: string) => void;
 }
 
 
@@ -22,6 +24,8 @@ const useSnippetStore = create<SnippetStore>((set) => ({
     removeSnippet: (id: string) => set((state) => ({ snippets: state.snippets.filter((snippet) => snippet.id !== id) })),
     updateSnippet: (id: string, snippet: Snippet) => set((state) => ({ snippets: state.snippets.map((s) => s.id === id ? snippet : s) })),
     deleteSnippet: (id: string) => set((state) => ({ snippets: state.snippets.filter((snippet) => snippet.id !== id) })),
+    moveSnippetUp: (id: string) => set((state) => ({ snippets: state.snippets.map((s) => s.id === id ? { ...s, order: s.order! - 1 } : s) })),
+    moveSnippetDown: (id: string) => set((state) => ({ snippets: state.snippets.map((s) => s.id === id ? { ...s, order: s.order! + 1 } : s) })),
 }));
 
 export default useSnippetStore;

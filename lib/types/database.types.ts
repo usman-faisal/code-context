@@ -94,7 +94,7 @@ export type Database = {
           id: string
           language: string | null
           note_id: string
-          order: number
+          order: number | null
         }
         Insert: {
           code: string
@@ -104,7 +104,7 @@ export type Database = {
           id?: string
           language?: string | null
           note_id: string
-          order: number
+          order?: number | null
         }
         Update: {
           code?: string
@@ -114,7 +114,7 @@ export type Database = {
           id?: string
           language?: string | null
           note_id?: string
-          order?: number
+          order?: number | null
         }
         Relationships: [
           {

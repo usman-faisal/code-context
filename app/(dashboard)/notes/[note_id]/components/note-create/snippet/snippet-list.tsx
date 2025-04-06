@@ -20,6 +20,7 @@ export default function SnippetList({ note }: { note: Tables<'notes'> }) {
                             <SnippetCodeInput isReadonly={false} snippet={snippet} />
                             <SnippetDetailInput isReadonly={false} snippet={snippet} />
                         </main>
+
                         <SnippetFooter showAddSnippet={index === snippetStore.snippets.length - 1} handleAddSnippet={() => handleSnippetCreation(false, note, snippetStore)} index={index} />
                     </div>
                 )

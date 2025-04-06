@@ -4,7 +4,7 @@ import { DEFAULT_SNIPPET_CODE, DEFAULT_SNIPPET_DETAIL, DEFAULT_SNIPPET_FILE_NAME
 import { Tables } from "./types/database.types";
 import { createSnippet } from "@/app/actions/snippets";
 import { toast } from "sonner";
-import useSnippetStore, {SnippetStore} from "@/store/snippetStore";
+import {SnippetStore} from "@/store/snippetStore";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -35,7 +35,7 @@ export async function handleSnippetCreation(
 ) {
   try {
       
-      const lastOrder = isFirst ? 1 : snippetStore.snippets[snippetStore.snippets.length - 1]?.order + 1 || 1;
+      const lastOrder = isFirst ? 1 : (snippetStore.snippets.length > 0 ? (snippetStore.snippets[snippetStore.snippets.length - 1]?.order ?? 0) + 1 : 1);
 
       const snippetPayload = {
           code: DEFAULT_SNIPPET_CODE,
@@ -43,12 +43,12 @@ export async function handleSnippetCreation(
           language: DEFAULT_SNIPPET_LANGUAGE,
           file_name: DEFAULT_SNIPPET_FILE_NAME,
           note_id: note.id,
-          order: lastOrder,
+          id: window.crypto.randomUUID(),
       };
 
       snippetStore.addSnippet({
-          id: window.crypto.randomUUID(),
           ...snippetPayload,
+          order: lastOrder,
           created_at: new Date().toISOString(),
       });
 

@@ -17,7 +17,7 @@ export default function SnippetDetailInput({snippet, isReadonly}: {snippet: Tabl
         }
 
         debounceTimer.current = setTimeout(async () => {
-            toast.loading('saving...');
+            toast.loading('saving...', {position: 'bottom-center'});
             await updateSnippet({
                 id: snippet.id,
                 detail: value ?? ''

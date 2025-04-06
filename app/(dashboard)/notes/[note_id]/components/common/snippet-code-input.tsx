@@ -19,7 +19,7 @@ export default function SnippetCodeInput({ snippet, isReadonly }: { snippet: Tab
         }
 
         debounceTimer.current = setTimeout(async () => {
-            toast.loading('saving...');
+            toast.loading('saving...', {position: 'bottom-center'});
             await updateSnippet({
                 id: snippet.id,
                 code: value ?? '',
@@ -66,7 +66,7 @@ export default function SnippetCodeInput({ snippet, isReadonly }: { snippet: Tab
                 width="100%"
                 theme="vs-dark"
                 onChange={handleChange}
-                defaultValue={snippet.code}
+                value={snippet.code}
             />
         </div>
     )

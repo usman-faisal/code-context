@@ -11,8 +11,8 @@ export default function SnippetCreateHeader({ snippet }: { snippet: Tables<'snip
     const snippetStore = useSnippetStore()
     async function handleDeleteSnippet() {
         try {
-            snippetStore.deleteSnippet(snippet.id)
             scroll('prev')
+            snippetStore.deleteSnippet(snippet.id)
             try {
                 await deleteSnippet(snippet.id, snippet.note_id)
             } catch (error) {
