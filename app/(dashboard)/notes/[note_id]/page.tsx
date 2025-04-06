@@ -1,9 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import NoteCreate from "./components/note-create/note-create";
-import ViewNote from "./components/view-note/view-note";
 import { Metadata } from "next";
 import { notFound } from 'next/navigation';
-
+import RenderNotePage from "./components/render-note-page";
 type NotePageProps = {
   params: Promise<{ note_id: string }>;
 };
@@ -56,14 +54,6 @@ export default async function NotePage({ params }: NotePageProps) {
   const noteBelongsToUser = user && note.user_id === user.id;
 
   return (
-    <>
-      {
-        !noteBelongsToUser ? (
-          <ViewNote note={note} snippets={safeSnippets}/>
-        ) : (
-          <NoteCreate note={note} snippets={safeSnippets}/>
-        )
-      }
-    </>
+    <RenderNotePage note={note} snippets={safeSnippets} isViewNote={!noteBelongsToUser} />
   );
 }

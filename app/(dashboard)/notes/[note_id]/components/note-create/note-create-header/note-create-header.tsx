@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-
 export default function NoteCreateHeader({ note }: { note: Tables<'notes'> }) {
     const [open, setOpen] = useState(false);
     const noteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/notes/${note.id}`;

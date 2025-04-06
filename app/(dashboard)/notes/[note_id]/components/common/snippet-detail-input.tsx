@@ -1,66 +1,84 @@
-'use client'
-import { Textarea } from "@/components/ui/textarea";
-import useSnippetStore from "@/store/snippetStore";
-import { Tables } from "@/lib/types/database.types";
-import { updateSnippet } from "@/app/actions/snippets";
-import { toast } from "sonner";
-import { useCallback, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { updateSnippet } from '@/app/actions/snippets';
+import { useCallback, useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
-export default function SnippetDetailInput({snippet, isReadonly}: {snippet: Tables<'snippets'>, isReadonly: boolean}) {
-    const snippetStore = useSnippetStore();
-    const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-    const [mode, setMode] = useState<'preview' | 'edit'>(isReadonly ? 'preview' : 'edit');
-    const updateInDatabase = useCallback((value: string | undefined) => {
-        if (debounceTimer.current) {
-            clearTimeout(debounceTimer.current);
-        }
+import GenerateDetailsWithAIButton from '../note-create/note-create-header/generate-details-with-ai-button';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { Tables } from '@/lib/types/database.types';
+import useSnippetStore from '@/store/snippetStore';
+import { Button } from '@/components/ui/button';
+export default function SnippetDetailInput({
+  snippet,
+  isReadonly,
+}: {
+  snippet: Tables<'snippets'>;
+  isReadonly: boolean;
+}) {
+  const snippetStore = useSnippetStore();
+  const [mode, setMode] = useState<'preview' | 'edit'>(
+    isReadonly ? 'preview' : 'edit'
+  );
 
-        debounceTimer.current = setTimeout(async () => {
-            toast.loading('saving...', {position: 'bottom-center'});
-            await updateSnippet({
-                id: snippet.id,
-                detail: value ?? ''
-            }, false);
-            toast.success('saved', {position: 'bottom-center'});
-            setTimeout(() => {
-                toast.dismiss();
-            }, 1000);
-        }, 1000);
-    }, [snippet.id, snippet.code]);
+  const buildDetailPayload = useCallback((value: string | undefined) => {
+    return {
+      id: snippet.id,
+      detail: value ?? '',
+    };
+  }, [snippet.id]);
 
-    function handleChange(value: string) {
-        snippetStore.updateSnippet(snippet.id, {
-            ...snippet,
-            detail: value
-        });
-        
-        updateInDatabase(value);
-    }
-    
-    return (
-        <div className="flex flex-col h-full">
-            <div className="flex items-center gap-4">
-                {
-                    !isReadonly ? (
-                        <>
-                            <Button variant="ghost"  onClick={() => setMode('preview')}>
-                                Preview
-                            </Button>
-                            <Button variant="ghost"  onClick={() => setMode('edit')}>
-                                Edit
-                            </Button>
-                        </>
-                    ) : (
-                        <Button variant='ghost'>Context</Button>
-                    )
-                }
-            </div>
-            {mode === 'preview' ? (
-                <MDEditor overflow value={snippet.detail} hideToolbar className="bg-white" height="100%" preview="preview"/>
-            ) : (
-                <MDEditor value={snippet.detail} preview="edit" hideToolbar height="100%"  onChange={(value) => handleChange(value ?? '')} />
-            )}
-        </div>
-    )
+  const triggerSaveDetail = useAutoSave({
+    updateFn: updateSnippet,
+    buildPayload: buildDetailPayload,
+    toastIdBase: `snippet-${snippet.id}-detail`,
+    dependencies: [buildDetailPayload],
+  });
+
+  function handleChange(value: string | undefined) {
+    snippetStore.updateSnippet(snippet.id, {
+      ...snippet,
+      detail: value ?? '',
+    });
+
+    triggerSaveDetail(value);
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-4">
+        {!isReadonly ? (
+          <>
+            <Button variant="ghost" onClick={() => setMode('preview')}>
+              Preview
+            </Button>
+            <Button variant="ghost" onClick={() => setMode('edit')}>
+              Edit
+            </Button>
+            <GenerateDetailsWithAIButton snippet={snippet} />
+          </>
+        ) : (
+          <Button variant="ghost">Context</Button>
+        )}
+      </div>
+      {mode === 'preview' ? (
+        <MDEditor
+          overflow
+          value={snippet.detail ?? ''} // Ensure value is not null/undefined
+          hideToolbar
+          height='100%'
+          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto'
+          preview="preview"
+        />
+      ) : (
+        <MDEditor
+          value={snippet.detail ?? ''} // Ensure value is not null/undefined
+          preview="edit"
+          height='100%'
+          hideToolbar
+          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto'
+          onChange={(value) => handleChange(value)} // Pass value directly
+        />
+      )}
+    </div>
+  );
 }

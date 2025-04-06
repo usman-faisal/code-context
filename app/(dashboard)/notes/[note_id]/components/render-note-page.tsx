@@ -3,11 +3,10 @@
 import { Tables } from "@/lib/types/database.types";
 import useSnippetStore from "@/store/snippetStore";
 import { useEffect } from "react";
-import NoSnippetCreated from "./snippet/no-snippet-created";
-import SnippetList from "./snippet/snippet-list";
+import SnippetList from "./common/snippet-list";
 import { registerScrollEvent } from "@/lib/utils";
-
-export default function NoteCreate({ note, snippets }: { note: Tables<'notes'>, snippets: Tables<'snippets'>[] }) {
+import NoSnippetsCreated from "./common/no-snippets-created";
+export default function RenderNotePage({ note, snippets, isViewNote }: { note: Tables<'notes'>, snippets: Tables<'snippets'>[], isViewNote: boolean }) {
     const snippetsStore = useSnippetStore()
 
     useEffect(() => {
@@ -20,17 +19,17 @@ export default function NoteCreate({ note, snippets }: { note: Tables<'notes'>, 
     }, [snippets])
 
     useEffect(() => {
-        registerScrollEvent()
+        registerScrollEvent()       
     }, [])
 
     return (
         <>
             {
-                snippetsStore.snippets.length < 1
+                snippetsStore.snippets.length === 0
                     ?
-                    <NoSnippetCreated note={note} />
+                    <NoSnippetsCreated note={note} isViewNote={isViewNote} />
                     :
-                    <SnippetList note={note} />
+                    <SnippetList isViewNote={isViewNote} note={note} />
             }
         </>
     )

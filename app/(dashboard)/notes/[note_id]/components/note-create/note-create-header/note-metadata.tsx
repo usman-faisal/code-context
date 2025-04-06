@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Pencil } from "lucide-react";
 import { updateNote } from "@/app/actions/notes";
-import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 

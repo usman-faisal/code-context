@@ -34,7 +34,7 @@ export async function createSnippet(snippet: TablesInsert<'snippets'>) {
     return data
 }
 
-export async function updateSnippet(snippet: TablesUpdate<'snippets'>, revalidate: boolean = true) {
+export async function updateSnippet(snippet: TablesUpdate<'snippets'>, revalidate: boolean = false) {
     if (!snippet.id) {
         throw new Error('Snippet ID is required')
     }

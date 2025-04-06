@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Note App",
-  description: "Note App",
+  title: "Code Context",
+  description: "Code Context is a note app that allows you to create and manage your notes with code snippets.",
+  icons: {
+    icon: '/notebook-pen.svg'
+  }
 };
 
 export default function RootLayout({

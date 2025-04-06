@@ -47,7 +47,7 @@ export default function FileName({ snippet }: {  snippet: Tables<'snippets'> }) 
             id: snippet.id,
             file_name: fileName,
             language: language
-        }, false)
+        }, true)
     }
 
     return (
