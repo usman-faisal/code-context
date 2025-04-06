@@ -26,7 +26,7 @@ export default function SnippetCodeInput({ snippet, isReadonly }: { snippet: Tab
                 detail: snippet.detail,
                 note_id: snippet.note_id
             }, false);
-            toast.success('saved');
+            toast.success('saved', {position: 'bottom-center'});
             setTimeout(() => {
                 toast.dismiss();
             }, 1000);
@@ -35,7 +35,6 @@ export default function SnippetCodeInput({ snippet, isReadonly }: { snippet: Tab
 
     const handleCopy = useCallback(() => {
         navigator.clipboard.writeText(snippet.code);
-        toast.success('Copied to clipboard');
     }, [snippet.code]);
 
     function handleChange(value: string | undefined) {

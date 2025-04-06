@@ -21,16 +21,19 @@ export default function NoteCreateHeader({ note }: { note: Tables<'notes'> }) {
     const noteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/notes/${note.id}`;
 
     const handlePublish = async () => {
-        await updateNote(note.id.toString(), {
-            is_public: !note.is_public
-        });
-        toast.success(note.is_public ? 'Note unpublished' : 'Note published');
+        try{
+            await updateNote(note.id.toString(), {
+                is_public: !note.is_public
+            });
+            toast.success(`Note ${note.is_public ? 'unpublished' : 'published'} successfully`, {position: 'bottom-center'});
+        } catch (error) {
+            toast.error(`Failed to ${note.is_public ? 'unpublish' : 'publish'} note`);
+        }
         setOpen(false);
     };
 
     const handleCopyUrl = () => {
         navigator.clipboard.writeText(noteUrl);
-        toast.success('URL copied to clipboard');
     };
 
     return (

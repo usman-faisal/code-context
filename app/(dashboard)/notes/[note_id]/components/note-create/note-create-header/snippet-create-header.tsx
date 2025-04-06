@@ -15,7 +15,6 @@ export default function SnippetCreateHeader({ snippet }: { snippet: Tables<'snip
             scroll('prev')
             try {
                 await deleteSnippet(snippet.id, snippet.note_id)
-                toast.success('Snippet deleted')
             } catch (error) {
                 toast.error('Something went wrong')
             }

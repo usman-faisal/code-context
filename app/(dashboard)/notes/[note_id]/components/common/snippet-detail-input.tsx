@@ -22,7 +22,7 @@ export default function SnippetDetailInput({snippet, isReadonly}: {snippet: Tabl
                 id: snippet.id,
                 detail: value ?? ''
             }, false);
-            toast.success('saved');
+            toast.success('saved', {position: 'bottom-center'});
             setTimeout(() => {
                 toast.dismiss();
             }, 1000);

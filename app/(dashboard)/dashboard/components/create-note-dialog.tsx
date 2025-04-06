@@ -30,7 +30,6 @@ export default function CreateNoteDialog() {
 
         try {
             const createdNote = await createNote(newNote.title, newNote.description)
-            toast.success('Note created successfully!')
             setOpen(false)
             setNewNote({ title: '', description: '' })
             router.push(`/notes/${createdNote.id}`)

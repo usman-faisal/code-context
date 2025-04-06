@@ -59,7 +59,6 @@ export async function handleSnippetCreation(
       }
 
       await createSnippet(snippetPayload);
-      toast.success('Snippet created');
   } catch (error) {
       if (error instanceof Error) {
           toast.error(error.message ?? 'Something went wrong');

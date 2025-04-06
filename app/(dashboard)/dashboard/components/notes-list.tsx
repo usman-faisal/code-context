@@ -11,7 +11,6 @@ export default function NotesList({ notes }: { notes: Tables<'notes'>[] }   ) {
     const handleDelete = async (id: string) => {
       try {
         await deleteNote(id);
-        toast.success('Note deleted successfully')
       } catch (error) {
         toast.error('Failed to delete note')
       }
