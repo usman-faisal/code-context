@@ -66,7 +66,7 @@ export default function SnippetDetailInput({
           value={snippet.detail ?? ''} // Ensure value is not null/undefined
           hideToolbar
           height='100%'
-          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto'
+          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] h-full min-h-[200px] overflow-y-auto'
           preview="preview"
         />
       ) : (
@@ -75,7 +75,7 @@ export default function SnippetDetailInput({
           preview="edit"
           height='100%'
           hideToolbar
-          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto'
+          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] h-full min-h-[200px] overflow-y-auto'
           onChange={(value) => handleChange(value)} // Pass value directly
         />
       )}

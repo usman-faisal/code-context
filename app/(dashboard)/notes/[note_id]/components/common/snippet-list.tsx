@@ -24,7 +24,7 @@ export default function SnippetList({ note, isViewNote }: { note: Tables<'notes'
         <>
             {snippetStore.snippets.map((snippet, index) => {
                 return (
-                    <div key={snippet.id} className="min-h-screen max-h-screen relative">
+                    <div key={snippet.id} className="md:min-h-screen md:max-h-screen relative">
                         {isViewNote ? <ViewNoteHeader note={note} /> : <RenderNoteCreateHeader index={index} snippet={snippet} note={note} />}
                         <SnippetListWrapper>
                             <SnippetCodeInput isReadonly={isViewNote ? true : false} snippet={snippet} />
