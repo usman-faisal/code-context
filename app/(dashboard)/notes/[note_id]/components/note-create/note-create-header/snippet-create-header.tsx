@@ -23,7 +23,7 @@ export default function SnippetCreateHeader({ snippet }: { snippet: Tables<'snip
         }
     }
     return (
-            <header className="flex items-center justify-between py-4 px-8">
+            <header className="note-header">
                 <div></div>
                 <div className="flex gap-2">
                     <Button onClick={() => handleDeleteSnippet()} variant='destructive'>

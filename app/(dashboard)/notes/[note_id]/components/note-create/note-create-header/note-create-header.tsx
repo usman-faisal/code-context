@@ -36,7 +36,7 @@ export default function NoteCreateHeader({ note }: { note: Tables<'notes'> }) {
     };
 
     return (
-        <header className="flex items-center justify-between py-4 px-8">
+        <header className="note-header">
             <div className="flex items-center gap-4">
                 <Button variant="outline" size="icon" onClick={() => {
                     window.history.back();

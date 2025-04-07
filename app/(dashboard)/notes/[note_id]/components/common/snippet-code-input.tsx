@@ -63,7 +63,7 @@ export default function SnippetCodeInput({
         </Button>
       </div>
       <Editor
-        className="md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] h-full min-h-[200px] overflow-y-auto"
+        className="md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto"
         options={{
           wordWrap: 'on',
           readOnly: isReadonly,

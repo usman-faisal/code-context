@@ -11,7 +11,6 @@ export async function getSnippets(noteId: string) {
         .select('*')
         .eq('note_id', noteId)
         .order('order', { ascending: true })
-        .order('created_at', { ascending: true })
     if (error) {
         throw new Error(error.message)
     }  

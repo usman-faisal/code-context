@@ -121,6 +121,15 @@
   }
 }
 
+body {
+  padding: 0;
+  margin: 0;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+.note-header {
+  @apply flex items-center justify-between py-4 px-8;
 }

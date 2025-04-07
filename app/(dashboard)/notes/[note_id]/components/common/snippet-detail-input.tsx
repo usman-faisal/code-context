@@ -65,17 +65,18 @@ export default function SnippetDetailInput({
           overflow
           value={snippet.detail ?? ''} // Ensure value is not null/undefined
           hideToolbar
-          height='100%'
-          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] h-full min-h-[200px] overflow-y-auto'
+          // optional prop
+          height={window.innerWidth < 768 ? undefined : '100%'}
+          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto'
           preview="preview"
         />
       ) : (
         <MDEditor
           value={snippet.detail ?? ''} // Ensure value is not null/undefined
           preview="edit"
-          height='100%'
           hideToolbar
-          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] h-full min-h-[200px] overflow-y-auto'
+          height={window.innerWidth < 768 ? undefined : '100%'}
+          className='md:h-[calc(100vh-12rem)] md:max-h-[calc(100vh-12rem)] overflow-y-auto'
           onChange={(value) => handleChange(value)} // Pass value directly
         />
       )}
