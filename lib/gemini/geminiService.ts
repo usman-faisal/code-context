@@ -27,7 +27,7 @@ export async function generateCodeDetails(
         // --- Initialize the client inside the function with the provided key ---
         const chatModel = new ChatGoogleGenerativeAI({
             apiKey: apiKey, // Use the passed apiKey
-            model: process.env.GOOGLE_MODEL || 'gemini-pro', // Fallback model if not set
+            model: process.env.GOOGLE_MODEL || 'gemini-1.5-flash-latest', // Fallback model if not set
             maxOutputTokens: 2048,
             temperature: 0.7,
         });

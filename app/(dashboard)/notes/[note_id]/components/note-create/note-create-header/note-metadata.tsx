@@ -1,78 +1,143 @@
-"use client"
 import { Tables } from "@/lib/types/database.types";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Check, Pencil } from "lucide-react";
 import { updateNote } from "@/app/actions/notes";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
+const inputVerticalPadding = "py-1";
+const inputHorizontalPadding = "px-3";
+const transparentBorder = "border border-transparent";
+const inputHeight = "h-6";
+
 export default function NoteMetadata({ note }: { note: Tables<'notes'> }) {
-    const [title, setTitle] = useState(note.title);
-    const [description, setDescription] = useState(note.description);
-    const [isEditing, setIsEditing] = useState(false);
+    const [title, setTitle] = useState(note.title || ""); // Initialize with empty string if null
+    const [description, setDescription] = useState(note.description || ""); // Initialize with empty string if null
+    const [isEditingTitle, setIsEditingTitle] = useState(false);
+    const [isEditingDescription, setIsEditingDescription] = useState(false);
 
-    const handleSave = async () => {
-        await updateNote(note.id.toString(), {
-            title,
-            description
-        });
-    };
+    useEffect(() => {
+        setTitle(note.title || "");
+        setDescription(note.description || "");
+    }, [note.title, note.description]);
 
-    const handleChange = (field: 'title' | 'description', value: string) => {
-        if (field === 'title') {
-            setTitle(value);
-        } else {
-            setDescription(value);
+    const handleSave = async (field: 'title' | 'description') => {
+        if (field === 'title' && title === note.title) return;
+        if (field === 'description' && description === note.description) return;
+
+
+        try {
+            await updateNote(note.id.toString(), {
+                [field]: field === 'title' ? title : description
+            });
+        } catch (error) {
+            console.error('Failed to update note:', error);
+            if (field === 'title') setTitle(note.title || "");
+            if (field === 'description') setDescription(note.description || "");
         }
     };
 
+    const handleTitleBlur = () => {
+        setIsEditingTitle(false);
+        if (title.trim() !== (note.title || "").trim()) {
+            handleSave('title');
+        } else {
+            setTitle(note.title || "");
+        }
+    };
+
+    const handleDescriptionBlur = () => {
+        setIsEditingDescription(false);
+        if (description.trim() !== (note.description || "").trim()) {
+            handleSave('description');
+        } else {
+            setDescription(note.description || "");
+        }
+    };
+
+    const inputBaseClasses = "bg-accent-foreground/10 focus:outline-none focus:ring-0 w-full rounded-md";
+
+
     return (
-        <div className={cn(
-            "flex items-start gap-2",
-        )}>
-            <div className="flex-1">
-                {isEditing ? (
-                    <div className="flex self-center gap-2 ">
-                        <Input
-                            type="text"
-                            value={title}
-                            onChange={(e) => handleChange('title', e.target.value)}
-                            className="text-2xl font-bold bg-accent-foreground/10 focus:outline-none focus:ring-0 w-full rounded-md"
-                        />
-                        <Input
-                            type="text"
-                            value={description}
-                            onChange={(e) => handleChange('description', e.target.value)}
-                            className="text-sm text-muted-foreground bg-transparent border-none focus:outline-none focus:ring-0 w-full"
-                        />
-                    </div>
-                ) : (
-                    <>
-                        <h1 className="text-2xl font-bold">{title}</h1>
-                        <p className="text-sm text-muted-foreground">{description}</p>
-                    </>
-                )}
-            </div>
-            {isEditing ? (
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                        setIsEditing(!isEditing);
-                        handleSave();
+        <div className="flex-1 space-y-1">
+            {isEditingTitle ? (
+                <Input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    onBlur={handleTitleBlur}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            handleTitleBlur();
+                        } else if (e.key === 'Escape') {
+                            setTitle(note.title || "");
+                            setIsEditingTitle(false);
+                        }
                     }}
-                >
-                    <Check className="h-4 w-4 text-green-500" />
-                </Button>
+                    className={cn(
+                        "text-2xl font-bold",
+                        inputBaseClasses,
+                        inputVerticalPadding,
+                        inputHorizontalPadding,
+                        inputHeight
+                    )}
+                    autoFocus
+                    placeholder="Untitled Note"
+                />
             ) : (
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsEditing(!isEditing)}
+                <h1
+                    className={cn(
+                        "text-lg font-bold cursor-pointer hover:bg-accent-foreground/10 rounded-md",
+                        inputVerticalPadding,
+                        inputHorizontalPadding,
+                        transparentBorder,
+                        inputHeight,
+                        "flex items-center"
+                    )}
+                    onClick={() => setIsEditingTitle(true)}
+                    title="Click to edit title"
                 >
-                    <Pencil className="h-4 w-4" />
-                </Button>
+                    {title || <span className="italic text-muted-foreground/80">Untitled Note</span>}
+                </h1>
+            )}
+            {isEditingDescription ? (
+                <Input
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    onBlur={handleDescriptionBlur}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            handleDescriptionBlur();
+                        } else if (e.key === 'Escape') {
+                            setDescription(note.description || ""); // Revert on Escape
+                            setIsEditingDescription(false);
+                        }
+                    }}
+                    className={cn(
+                        "text-sm text-muted-foreground",
+                        inputBaseClasses,
+                        inputVerticalPadding,
+                        inputHorizontalPadding,
+                        inputHeight
+                    )}
+                    autoFocus
+                    placeholder="Add description..."
+                />
+            ) : (
+                <p
+                    className={cn(
+                        "text-sm text-muted-foreground cursor-pointer hover:bg-accent-foreground/10 rounded-md",
+                        inputVerticalPadding,
+                        inputHorizontalPadding,
+                        transparentBorder,
+                        inputHeight,
+                        "flex items-center"
+                    )}
+                    onClick={() => setIsEditingDescription(true)}
+                    title="Click to edit description"
+                >
+                    {description || <span className="italic text-muted-foreground/80">Add description...</span>}
+                </p>
             )}
         </div>
     )
