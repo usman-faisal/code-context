@@ -43,7 +43,8 @@ export default async function NotePage({ params }: NotePageProps) {
   const { data: snippets, error: snippetsError } = await supabase
     .from('snippets')
     .select('*')
-    .eq('note_id', note_id);
+    .eq('note_id', note_id)
+    .order('order', { ascending: true });
 
   if (snippetsError) {
     console.error("Snippets fetch error:", snippetsError.message);
