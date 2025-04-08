@@ -4,7 +4,7 @@ export const FILE_EXTENSIONS = {
     'ts': 'typescript',
     'py': 'python',
     'java': 'java',
-    'cpp': 'c++',
+    'cpp': 'cpp',
     'c': 'c',
     'c#': 'c#',
     'html': 'html',
