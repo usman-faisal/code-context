@@ -68,6 +68,11 @@ export default function SnippetCodeInput({
           wordWrap: 'on',
           readOnly: isReadonly,
         }}
+        beforeMount={(monaco) => {
+          monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+            noSemanticValidation: true,
+          });
+        }}
         language={snippet.language ?? DEFAULT_SNIPPET_LANGUAGE}
         width="100%"
         theme="vs-dark"
